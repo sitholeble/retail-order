@@ -5,8 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import rt.service.order.retailorder.OrderServiceApi;
 import rt.service.order.retailorder.entity.OrderEntity;
@@ -21,6 +25,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -268,6 +273,21 @@ public class OrderControllerTest {
 
         when(serviceApi.cancelOrder(any(UUID.class)))
                 .thenReturn(true);
+
+        var result = mockMvc.perform(request);
+
+        result.andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void whenUpdateOrder_andRequestIsValid_thenReturnsUpdatedOrder() throws Exception {
+        var orderId = UUID.randomUUID();
+
+        var request = put("/orders/{order_id}/order", orderId)
+                .contentType("application/json");
+
+        when(serviceApi.updateOrder(eq(orderId), any(OrderEntity.class)))
+                .thenReturn(mock(OrderEntity.class));
 
         var result = mockMvc.perform(request);
 

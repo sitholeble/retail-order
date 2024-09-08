@@ -56,4 +56,13 @@ public class OrderController {
                 ? ResponseEntity.ok("Order canceled successfully.")
                 : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order could not be canceled.");
     }
+
+    @PutMapping(value = "/{order_id}/order",
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderEntity> updateOrder(@PathVariable("order_id") UUID orderId, OrderEntity orderEntity) {
+
+        var order = serviceApi.updateOrder(orderId, orderEntity);
+
+        return ResponseEntity.ok(order);
+    }
 }
