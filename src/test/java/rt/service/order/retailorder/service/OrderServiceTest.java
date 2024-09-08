@@ -2,6 +2,8 @@ package rt.service.order.retailorder.service;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -39,6 +41,9 @@ public class OrderServiceTest {
 
     @Mock
     private OrderRepository repository;
+
+    @Captor
+    private ArgumentCaptor<OrderEntity> orderCaptor;
 
     private OrderEntity buildOrderEntity() {
         return OrderEntity.builder()
@@ -123,10 +128,18 @@ public class OrderServiceTest {
         when(repository.findById(orderId))
                 .thenReturn(Optional.of(orderEntity));
 
-        service.cancelOrder(orderId);
+        when(repository.save(any(OrderEntity.class)))
+                .thenReturn(orderEntity);
+
+        orderEntity.setOrderStatus(OrderStatus.CANCELLED);
+
+        boolean updatedOrder = service.cancelOrder(orderId);
 
         verify(repository, times(INVOKE_ONCE))
-                .save(orderEntity);
+                .save(orderCaptor.capture());
+
+        assertTrue(updatedOrder);
+        assertEquals(OrderStatus.CANCELLED, orderCaptor.getValue().getOrderStatus());
     }
 
     @Test

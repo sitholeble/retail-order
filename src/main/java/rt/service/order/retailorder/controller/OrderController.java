@@ -3,6 +3,7 @@ package rt.service.order.retailorder.controller;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -44,5 +45,15 @@ public class OrderController {
         var orderListResponse = serviceApi.getAllOrders();
 
         return ResponseEntity.ok(orderListResponse);
+    }
+
+    @DeleteMapping(value = "/{order_id}/cancel",
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> cancelOrder(@PathVariable("order_id") UUID orderId) {
+        boolean isCancelled = serviceApi.cancelOrder(orderId);
+
+        return isCancelled
+                ? ResponseEntity.ok("Order canceled successfully.")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Order could not be canceled.");
     }
 }

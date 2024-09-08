@@ -23,8 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
@@ -254,6 +253,21 @@ public class OrderControllerTest {
 
         when(serviceApi.getAllOrders())
                 .thenReturn(List.of(mock(OrderEntity.class)));
+
+        var result = mockMvc.perform(request);
+
+        result.andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void whenCancelOrder_updateStatus() throws Exception {
+        var orderId = UUID.randomUUID();
+
+        var request = delete("/orders/{order_id}/cancel", orderId)
+                .contentType("application/json");
+
+        when(serviceApi.cancelOrder(any(UUID.class)))
+                .thenReturn(true);
 
         var result = mockMvc.perform(request);
 

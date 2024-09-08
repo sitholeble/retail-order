@@ -41,13 +41,15 @@ public class OrderService implements OrderServiceApi {
     }
 
     @Override
-    public OrderEntity cancelOrder(UUID orderId) {
+    public boolean cancelOrder(UUID orderId) {
         var existingOrder = repository.findById(orderId)
                 .orElseThrow(()-> new OrderNotFoundException(orderId));
 
         existingOrder.setOrderStatus(OrderStatus.CANCELLED);
 
-        return repository.save(existingOrder);
+        var updatedOrder = repository.save(existingOrder);
+
+        return updatedOrder.getOrderStatus().equals(OrderStatus.CANCELLED);
     }
 
     @Override
