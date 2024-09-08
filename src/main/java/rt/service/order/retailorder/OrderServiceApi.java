@@ -3,7 +3,6 @@ package rt.service.order.retailorder;
 import rt.service.order.retailorder.entity.OrderEntity;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface OrderServiceApi {

@@ -5,6 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import rt.service.order.retailorder.OrderServiceApi;
 import rt.service.order.retailorder.entity.OrderEntity;
 import rt.service.order.retailorder.exception.OrderNotFoundException;
 import rt.service.order.retailorder.model.OrderStatus;
@@ -50,6 +51,12 @@ public class OrderServiceTest {
                 .paymentStatus(PAYMENT_STATUS)
                 .totalAmount(TOTAL_AMOUNT)
                 .build();
+    }
+
+    @Test
+    void implementsOrderServiceApi() {
+        assertTrue(OrderServiceApi.class
+                .isAssignableFrom(OrderService.class));
     }
 
     @Test

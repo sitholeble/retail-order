@@ -1,6 +1,7 @@
 package rt.service.order.retailorder.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,15 +25,15 @@ public class OrderEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID orderId;
 
-    private String description;
-    private LocalDate orderDate;
-    private String shippingAddress;
+    private @NotNull String description;
+    private @NotNull LocalDate orderDate;
+    private @NotNull String shippingAddress;
     private String billingAddress;
-    private BigDecimal totalAmount;
+    private @NotNull BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+    private @NotNull OrderStatus orderStatus;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus;
+    private @NotNull PaymentStatus paymentStatus;
 }
