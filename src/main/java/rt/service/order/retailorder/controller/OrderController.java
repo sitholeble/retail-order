@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import rt.service.order.retailorder.OrderServiceApi;
 import rt.service.order.retailorder.entity.OrderEntity;
 
+import java.util.List;
 import java.util.UUID;
 
 @RequestMapping("/orders")
@@ -36,5 +37,12 @@ public class OrderController {
          var orderResponse = serviceApi.getOrder(orderId);
 
          return ResponseEntity.ok(orderResponse);
+    }
+
+    @GetMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<OrderEntity>> getAllOrders() {
+        var orderListResponse = serviceApi.getAllOrders();
+
+        return ResponseEntity.ok(orderListResponse);
     }
 }

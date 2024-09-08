@@ -15,6 +15,7 @@ import rt.service.order.retailorder.model.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -243,6 +244,19 @@ public class OrderControllerTest {
         var result = mockMvc.perform(request);
 
         //assert
+        result.andExpect(status().isOk()).andReturn();
+    }
+
+    @Test
+    void whenGetAllOrders_returnListOfOrders() throws Exception {
+        var request = get("/orders")
+                .contentType("application/json");
+
+        when(serviceApi.getAllOrders())
+                .thenReturn(List.of(mock(OrderEntity.class)));
+
+        var result = mockMvc.perform(request);
+
         result.andExpect(status().isOk()).andReturn();
     }
 }
