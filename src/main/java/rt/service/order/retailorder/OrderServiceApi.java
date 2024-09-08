@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface OrderServiceApi {
     OrderEntity createOrder(OrderEntity order);
     OrderEntity updateOrder(UUID orderId, OrderEntity updateOrder);
-    OrderEntity cancelOrder(UUID order);
-    OrderEntity getOrder(UUID order);
+    OrderEntity cancelOrder(UUID orderId);
+    OrderEntity getOrder(UUID orderId);
     List<OrderEntity> getAllOrders();
 }

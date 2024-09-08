@@ -29,4 +29,12 @@ public class OrderController {
         return ResponseEntity.status(HttpStatusCode.valueOf(201))
                 .body(order.getOrderId());
     }
+
+    @GetMapping(value = "/{order_id}/order",
+    consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderEntity> getOrder(@PathVariable("order_id") UUID orderId) {
+         var orderResponse = serviceApi.getOrder(orderId);
+
+         return ResponseEntity.ok(orderResponse);
+    }
 }
